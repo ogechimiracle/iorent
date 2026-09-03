@@ -1,99 +1,231 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import { FaPhoneAlt } from "react-icons/fa";
-import { IoIosMail, IoMdPerson } from "react-icons/io";
+import { IoIosMail, IoMdPerson, IoMdClose, IoMdMenu } from "react-icons/io";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { TbSteeringWheelFilled } from "react-icons/tb";
 import { PiSquaresFourLight } from "react-icons/pi";
-import { MdOutlineWbSunny } from "react-icons/md";
 import ThemeToggle from "./theme-toggle";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NavLinks } from "@/utils/constant";
 
-
-
 export default function Header1() {
+  const path = usePathname();
+  const [scrolled, setScrolled] = useState<boolean>(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
-  const path = usePathname()
-  const [scrolled, setScrolled] = useState<boolean>(false)
-
-  useEffect(()=>{
-
-    const handleScroll = ()=>{
-      if(window.scrollY > 40){
-        setScrolled(true)
-      }else{
-        setScrolled(false)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 40) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
       }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [path]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
     }
-
-    window.addEventListener("scroll",handleScroll)
-
-    return ()=>{
-      window.removeEventListener("scroll", handleScroll)
-    }
-
-  },[])
-
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   return (
-    <div className="">
-      <header className={`bg-transparent ${path === "/"? 'fixed top-0 right-0 left-0 z-30':'relative'}`}>
-        <div className={` ${scrolled ? 'hidden':'flex'} border-b-[0.25px] border-[#b0abab] px-3 py-2  item-center justify-between`}>
-          <div className="flex text-white gap-5 text-[13px]">
-            <p className="flex gap-2 items-center">
-              <FaPhoneAlt /> +2348063577401
-            </p>
-            <p className="flex gap-2 items-center">
-              <IoIosMail /> montfortv22@gmail.com
-            </p>
+    <nav className="w-full">
+      <header
+        className={`w-full bg-transparent ${path === "/" ? "fixed top-0 right-0 left-0 z-30" : "relative"}`}
+      >
+        {/* Top Notification / Contact Bar */}
+        <div
+          className={`${scrolled ? "hidden" : "flex"} border-b-[0.25px] border-[#b0abab] px-4 py-2 items-center justify-between text-white text-[11px] sm:text-[13px]`}
+        >
+          <div className="flex flex-wrap items-center gap-3 sm:gap-5">
+            <a
+              href="tel:+2348063577401"
+              className="flex gap-1.5 items-center hover:text-[#70f46d] transition-colors"
+            >
+              <FaPhoneAlt className="size-3" />
+              <span>+2348063577401</span>
+            </a>
+            <a
+              href="mailto:montfortv22@gmail.com"
+              className="hidden xs:flex gap-1.5 items-center hover:text-[#70f46d] transition-colors"
+            >
+              <IoIosMail className="size-4" />
+              <span className="truncate max-w-[160px] sm:max-w-none">
+                montfortv22@gmail.com
+              </span>
+            </a>
           </div>
-          <div className="flex gap-3">
-            <p className="text-white text-[13px]">
-              More than <span className="text-[15px] text-[#70f46d]">800+</span>{" "}
+
+          <div className="hidden lg:flex items-center gap-3">
+            <p>
+              More than{" "}
+              <span className="text-[15px] font-bold text-[#70f46d]">800+</span>{" "}
               special collection cars in this summer
             </p>
-            <button className="bg-[#70f46d] px-3 rounded-[20px] cursor-pointer flex items-center gap-2 text-[12px] font-semibold">
+            <button className="bg-[#70f46d] text-black px-3 py-1 rounded-[20px] cursor-pointer flex items-center gap-2 text-[12px] font-semibold hover:bg-emerald-400 transition-colors">
               Access Now <FaArrowRightLong />
             </button>
           </div>
-          <div className="flex item-center justify-center text-white text-[13px]">
+
+          <div className="hidden lg:flex items-center justify-center text-[13px]">
             <p className="px-3">EN</p>
-            <p className="px-3 border-r border-[#b0abab] border-l p">USD</p>
+            <p className="px-3 border-r border-l border-[#b0abab]">USD</p>
           </div>
         </div>
+
+        {/* Main Navigation Bar */}
         <div
-          className={`border-b  px-3 py-3 flex items-center justify-between ${path === "/"  ? "border-white text-white" : "border-slate-600 dark:border-slate-500 bg-white dark:text-white dark:bg-slate-800 text-black"} ${scrolled && path === "/" ? 'bg-green-800':''}`}
+          className={`border-b px-4 py-3 flex items-center justify-between transition-colors duration-300 ${
+            path === "/"
+              ? "border-white/20 text-white"
+              : "border-slate-200 dark:border-slate-700 bg-white text-black dark:text-white dark:bg-slate-800"
+          } ${scrolled && path === "/" ? "bg-green-900/90 backdrop-blur-md shadow-md" : ""}`}
         >
-          <div className="flex item-center">
-            <div className="px-5"></div>
-            <p className="font-bold  text-[30px] flex gap-2">
-              <TbSteeringWheelFilled className="size-12 text-[#70f46d]" />{" "}
+          {/* Brand Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <TbSteeringWheelFilled className="size-8 sm:size-10 text-[#70f46d]" />
+            <span className="font-bold text-2xl sm:text-[30px] tracking-tight">
               Carento
-            </p>
-          </div>
-          <div className=" flex gap-5 items-center">
-            {NavLinks.map((items:any, index:number)=>(
-              <Link key={items.title} href={items.url} className={`${path === items.url ? 'text-green-500 underline underline-offset-8':''}`}>{items.title}</Link>
+            </span>
+          </Link>
+
+          {/* Desktop Navigation Links */}
+          <div className="hidden lg:flex items-center gap-6 font-medium">
+            {NavLinks.map((item: any) => (
+              <Link
+                key={item.title}
+                href={item.url}
+                className={`transition-colors hover:text-[#70f46d] ${
+                  path === item.url
+                    ? "text-[#70f46d] underline underline-offset-8 font-semibold"
+                    : ""
+                }`}
+              >
+                {item.title}
+              </Link>
             ))}
           </div>
-          <div className="flex gap-3">
+
+          {/* Actions & Controls */}
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/login"
-              className=" rounded-[10px] text-[13px] px-3 py-2 font-medium cursor-pointer hover:bg-[#70f46d] flex gap-1 items-center"
+              className="hidden lg:flex items-center gap-1.5 rounded-lg text-[13px] px-3.5 py-2 font-medium bg-slate-100 dark:bg-slate-700 hover:bg-[#70f46d] hover:text-black transition-all"
             >
               <IoMdPerson className="size-4" />
               Sign in
             </Link>
+
             <ThemeToggle />
-            <div className="py-1 px-2 bg-[#70f46d] rounded-[10px] flex items-center">
+
+            <div className="hidden lg:flex items-center py-2 px-2.5 bg-[#70f46d] text-black rounded-lg cursor-pointer hover:bg-emerald-400 transition-colors">
               <PiSquaresFourLight className="size-5" />
+            </div>
+
+            {/* Mobile Menu Toggle Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 rounded-lg bg-white text-black dark:bg-slate-700 dark:text-white cursor-pointer"
+              aria-label="Toggle Navigation Menu"
+            >
+              {mobileMenuOpen ? (
+                <IoMdClose className="size-7" />
+              ) : (
+                <IoMdMenu className="size-7" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Slide-Out Menu */}
+        <div
+          className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden transition-opacity duration-300 ${
+            mobileMenuOpen
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          }`}
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className={`fixed top-0 right-0 bottom-0 w-[80%] max-w-[320px] bg-slate-900 text-white p-6 flex flex-col justify-between shadow-2xl transition-transform duration-300 ease-in-out ${
+              mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div>
+              <div className="flex items-center justify-between pb-6 border-b border-slate-800">
+                <div className="flex items-center gap-2">
+                  <TbSteeringWheelFilled className="size-8 text-[#70f46d]" />
+                  <span className="font-bold text-xl">Carento</span>
+                </div>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-1.5 rounded-full hover:bg-slate-800 transition-colors"
+                >
+                  <IoMdClose className="size-6 text-slate-400" />
+                </button>
+              </div>
+
+              {/* Mobile Navigation Links */}
+              <div className="flex flex-col gap-4 py-6">
+                {NavLinks.map((item: any) => (
+                  <Link
+                    key={item.title}
+                    href={item.url}
+                    className={`py-2 text-lg font-medium transition-colors ${
+                      path === item.url
+                        ? "text-[#70f46d] font-semibold pl-2 border-l-2 border-[#70f46d]"
+                        : "text-slate-300 hover:text-white"
+                    }`}
+                  >
+                    {item.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile Footer Actions */}
+            <div className="pt-6 border-t border-slate-800 flex flex-col gap-4">
+              <Link
+                href="/login"
+                className="w-full flex items-center justify-center gap-2 bg-[#70f46d] text-black py-3 rounded-lg font-semibold text-sm hover:bg-emerald-400 transition-colors"
+              >
+                <IoMdPerson className="size-5" />
+                Sign in
+              </Link>
+
+              <div className="text-slate-400 text-xs flex flex-col gap-2 pt-2">
+                <div className="flex items-center gap-2">
+                  <FaPhoneAlt className="size-3 text-[#70f46d]" />
+                  <span>+2348063577401</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <IoIosMail className="size-4 text-[#70f46d]" />
+                  <span>montfortv22@gmail.com</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </header>
-    </div>
+    </nav>
   );
 }

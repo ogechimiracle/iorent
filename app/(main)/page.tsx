@@ -18,13 +18,13 @@ import SectionHead from "@/components/car-ui/sectionHead";
 export default function Section() {
   return (
     <div className="">
-      <div className="absolute top-0 w-full lg:h-[95%] bg-[url('/images/hero1.jpeg')] bg-cover bg-center bg-no-repeat">
+      <div className="absolute top-0 w-full h-screen lg:h-[95%] bg-[url('/images/hero1.jpeg')] bg-cover bg-center bg-no-repeat">
         <div className="bg-black/50 w-full h-full">
-          <div className="w-[700px] ml-[100px]  h-full flex flex-col justify-center">
+          <div className="lg:w-[700px] lg:ml-[100px] w-full h-full flex flex-col justify-center">
             <p className="text-[#70f46d] font-medium text-[16px]">
               Find Your Perfect Car
             </p>
-            <h1 className="text-white font-bold text-[50px]">
+            <h1 className="text-white font-bold lg:text-[50px] text-3xl">
               Looking for a vehicle? <br />
               You’re in the perfect spot.
             </h1>

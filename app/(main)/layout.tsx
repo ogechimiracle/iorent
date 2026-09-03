@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Montserrat, Borel } from "next/font/google";
 import "../globals.css";
 import NavBar from "@/components/navbar";
 import ScrollToTop from "@/components/ScrollToTop";
+import Footer from "@/components/footer";
+
 
 
 
@@ -33,6 +35,7 @@ export default function UserLayout({ children }: LayoutProps<"/">) {
       <NavBar />
       <main className="">{children}</main>
       <ScrollToTop/>
+      <Footer/>
     </div>
   );
 }

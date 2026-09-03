@@ -30,7 +30,7 @@ export default function ScrollToTop(){
      }
 
      return (
-          <button className={`fixed bottom-10 right-8 size-12 rounded-full grid place-content-center bg-green-700 text-white dark:bg-slate-700 dark:text-white animate-bounce ease-in duration-300 cursor-pointer ${isScrolled ? 'block':'hidden'}`} onClick={handleScrolToTop}>
+          <button className={` z-30 fixed bottom-10 right-8 size-12 rounded-full grid place-content-center bg-green-700 text-white dark:bg-slate-700 dark:text-white animate-bounce ease-in duration-300 cursor-pointer ${isScrolled ? 'block':'hidden'}`} onClick={handleScrolToTop}>
                <IoMdArrowRoundUp size={25}/>
           </button>
      )

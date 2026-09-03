@@ -1,8 +1,22 @@
+'use client'
+
 import { CiLock } from "react-icons/ci";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaArrowRightLong } from "react-icons/fa6";
 import images from "next/image";
+import { useState } from "react";
+
+
 export default function LoginPage() {
+
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+
+  const SubmitForm = (e:React.FormEvent<HTMLFormElement>)=>{
+    e.preventDefault()
+    alert(`Email: ${email} \nPassword: ${password}`)
+  }
+
   return (
     <div className="">
       <div className="w-full h-screen flex items-center justify-center">
@@ -23,12 +37,16 @@ export default function LoginPage() {
             </p>
 
             <div className="mt-5">
-              <form action="">
+              <form onSubmit={SubmitForm}>
                 <div className="my-2 relative">
                   <MdOutlineEmail className="absolute left-3 top-12 -translate-y-1/2 text-black size-6 " />
                   <label htmlFor="">Email address</label>
                   <input
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="off"
+                    autoCorrect="false"
                     className="w-full border-2 py-2.5 px-4 pl-10 rounded-lg bg-white border-gray-200"
                     placeholder=" me@email.com"
                     required
@@ -40,6 +58,10 @@ export default function LoginPage() {
                   <label htmlFor="">password</label>
                   <input
                     type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="new-password"
+                    autoCorrect="false"
                     className="w-full border-2 py-2.5 px-4 rounded-lg border-gray-200 bg-white pl-10"
                     placeholder="123456"
                     required

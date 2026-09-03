@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 export default function AuthLayout({ children }: LayoutProps<"/">) {
   return (
     <div className={`${monserat.variable} ${borel.variable}  antialiased`}>
-     <div>Oasis Car Rent</div>
+    
       {children}
     </div>
   );

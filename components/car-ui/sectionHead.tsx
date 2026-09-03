@@ -17,16 +17,16 @@ export default function SectionHead({title, url, subtitle, actionText}:SectionPr
          </h1>
 
          <div className="flex items-center justify-between">
-           <p className="font-light dark:text-gray-400 text-gray-500">
+           <p className="font-light dark:text-gray-400 text-gray-500 text-sm lg:text-md">
              {subtitle}
            </p>
            {actionText && (
              <Link
                href={url || "/"}
-               className="inline-flex items-center space-x-2 hover:text-green-400 dark:hover:text-green-400 transition-all ease-in-out duration-200"
+               className="flex items-center lg:space-x-2 hover:text-green-400 dark:hover:text-green-400 transition-all ease-in-out duration-200"
              >
-               <span>{actionText}</span>
-               <MdOutlineArrowRightAlt size={25} />
+               <span className="text-xs lg:text-md">{actionText}</span>
+               <MdOutlineArrowRightAlt  className="lg:text-4xl text-xs" />
              </Link>
            )}
          </div>
