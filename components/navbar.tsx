@@ -127,7 +127,7 @@ export default function Header1() {
           {/* Actions & Controls */}
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
-              href="/login"
+              href="/auth"
               className="hidden lg:flex items-center gap-1.5 rounded-lg text-[13px] px-3.5 py-2 font-medium bg-slate-100 dark:bg-slate-700 hover:bg-[#70f46d] hover:text-black transition-all"
             >
               <IoMdPerson className="size-4" />

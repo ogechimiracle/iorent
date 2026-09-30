@@ -1,131 +1,254 @@
-'use client'
+"use client";
 
-import { CiLock } from "react-icons/ci";
-import { MdOutlineEmail } from "react-icons/md";
-import { FaArrowRightLong } from "react-icons/fa6";
-import images from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  CiLock,
+  CiMail,
+  CiUser,
+} from "react-icons/ci";
+import {
+  FaArrowRightLong,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa6";
+import { LoginUser } from "@/api/authService";
+import {toast} from 'react-toastify'
+import { json } from "zod";
+import { useRouter } from "next/navigation";
+import { UserRound } from "lucide-react";
+
+
 
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const router = useRouter()
 
-  const SubmitForm = (e:React.FormEvent<HTMLFormElement>)=>{
-    e.preventDefault()
-    alert(`Email: ${email} \nPassword: ${password}`)
-  }
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      // TODO: Replace with your API request
+      const data = {
+        password,
+        email,
+      };
+       const res = await LoginUser(data);
+       if(res.status){
+        localStorage.setItem('CarentoUser', JSON.stringify(res.data))
+        toast.success(res.message)
+        router.push('/admin')
+       }else{
+        toast.error(res.message)
+       }
+      
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(()=>{
+    const getUser =()=>{
+      const user =  localStorage.getItem("CarentoUser")||[]
+      if(user){
+        router.push("/")
+      }
+    }
+    getUser()
+  },[])
 
   return (
-    <div className="">
-      <div className="w-full h-screen flex items-center justify-center">
-        <div className="w-[620px] h-[820px] shadow-md rounded-lg px-5 py-3 bg-gray-300 mt-110">
-          <div className="flex flex-col w-full px-2">
-            <div className="flex gap-3 items-center justify-center">
-              <button className="w-[60px] h-[50px] bg-gray-100 rounded-lg size-[10] grid place-content-center">
-                <CiLock />
-              </button>
-              <h1 className="text-black font-bold text-[20px] text-center">
-                Login to your account
-              </h1>
-            </div>
-
-            <p className=" text-gray-800 text-sm text-center mt-5 ml-8  font-medium">
-              Your personal data will be used to support your experience <br />
-              throughout this website, to manage access to your account.
-            </p>
-
-            <div className="mt-5">
-              <form onSubmit={SubmitForm}>
-                <div className="my-2 relative">
-                  <MdOutlineEmail className="absolute left-3 top-12 -translate-y-1/2 text-black size-6 " />
-                  <label htmlFor="">Email address</label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="off"
-                    autoCorrect="false"
-                    className="w-full border-2 py-2.5 px-4 pl-10 rounded-lg bg-white border-gray-200"
-                    placeholder=" me@email.com"
-                    required
-                  />
-                </div>
-
-                <div className="my-2 relative">
-                  <CiLock className="absolute left-3 top-12 -translate-y-1/2 text-black size-6 " />
-                  <label htmlFor="">password</label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="new-password"
-                    autoCorrect="false"
-                    className="w-full border-2 py-2.5 px-4 rounded-lg border-gray-200 bg-white pl-10"
-                    placeholder="123456"
-                    required
-                  />
-                  <div className="size-5 rounded-lg absolute right-5 top-8 cursor-pointer shadow-lg grid place-content-center">
-                    <img
-                      src="/eyeopen.png"
-                      alt=""
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <input type="checkbox" className="accent-green-500" />
-                    <label htmlFor="remember">Remember me</label>
-                  </div>
-                  <a
-                    href="forgot password"
-                    className="underline hover:text-green-700 cursor-pointer"
-                  >
-                    Forgot password
-                  </a>
-                </div>
-
-                <button className="bg-green-500 w-full mt-5 px-5 py-3 rounded-lg cursor-pointer hover:bg-green-600 flex items-center justify-center gap-2 ">
-                  Login
-                  <FaArrowRightLong />
-                </button>
-
-                <p className="text-md text-center text-gray-700 mt-4 ">
-                  Don't have an account?{" "}
-                  <span className="text-black underline cursor-pointer hover:text-green-600">
-                    {" "}
-                    <a href="">Register now</a>
-                  </span>
-                </p>
-              </form>
-            </div>
-            <hr className="mt-9 text-gray-400" />
+    <main className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md">
+        {/* Logo / Brand */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-14 h-14 rounded-2xl bg-green-600 flex items-center justify-center shadow-lg shadow-green-600/20">
+            <CiLock className="text-white text-3xl" />
           </div>
-          <p className="mt-6 text-center text-gray-700 text-md">
-            Login with social networks
+
+          <h1 className="mt-4 text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+            Welcome Back!
+          </h1>
+
+          <p className="mt-2 text-sm sm:text-base text-slate-500 text-center">
+            Login to continue
           </p>
+        </div>
 
-          <div className="flex flex-col gap-y-4 mt-7">
-            <button className="bg-blue-600 w-full px-5 py-3 cursor-pointer rounded-lg hover:bg-blue-700 text-white hover:text-yellow-400 text-sm">
-              Sign in with Facebook
+        {/* Card */}
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 p-5 sm:p-8">
+          <form className="space-y-5" acceptCharset="" onSubmit={submitForm}>
+            {/* Email */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-slate-700 mb-2"
+              >
+                Email address
+              </label>
+
+              <div className="relative">
+                <CiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-2xl pointer-events-none" />
+
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  required
+                  className="w-full h-12 rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-green-500 focus:bg-white focus:ring-4 focus:ring-green-500/10"
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-slate-700"
+                >
+                  Password
+                </label>
+
+                <Link
+                  href="/forgot-password"
+                  className="text-sm font-medium text-green-600 hover:text-green-700 transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
+              <div className="relative">
+                <CiLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-2xl pointer-events-none" />
+
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                  placeholder="Enter your password"
+                  required
+                  className="w-full h-12 rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-12 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-green-500 focus:bg-white focus:ring-4 focus:ring-green-500/10"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showPassword ? (
+                    <FaEyeSlash size={18} />
+                  ) : (
+                    <FaEye size={18} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Remember Me */}
+            <div className="flex items-center">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300 text-green-600 accent-green-600 focus:ring-green-500"
+                />
+
+                <span className="text-sm text-slate-600">Remember me</span>
+              </label>
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+             
+              disabled={isLoading}
+              className="w-full h-12 rounded-xl bg-green-600 hover:bg-green-700 active:bg-green-800 disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-600/20"
+            >
+              {isLoading ? (
+                <>
+                  <span className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  please wait...
+                </>
+              ) : (
+                <>
+                  Login
+                  <FaArrowRightLong size={14} />
+                </>
+              )}
             </button>
-            <button className="bg-red-600 w-full px-5 py-3  cursor-pointer rounded-lg hover:bg-red-700 text-white hover:text-yellow-400 text-sm">
-              Sign in with Google
+          </form>
+
+          {/* Divider */}
+          <div className="flex items-center gap-4 my-7">
+            <div className="h-px flex-1 bg-slate-200" />
+            <span className="text-xs text-slate-400 uppercase tracking-wider">
+              Or continue with
+            </span>
+            <div className="h-px flex-1 bg-slate-200" />
+          </div>
+
+          {/* Social Login */}
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              className="h-11 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-sm font-medium text-slate-700"
+            >
+              <span className="font-bold text-lg">G</span>
+              Google
             </button>
-            <button className="bg-black w-full px-5 py-3 cursor-pointer rounded-lg hover:bg-black text-white hover:text-yellow-400 text-sm">
-              Sign in with GitHub
-            </button>
-            <button className="bg-blue-600 w-full px-5 py-3 cursor-pointer rounded-lg hover:bg-blue-700 text-white hover:text-yellow-400 text-sm">
-              Sign in with Linkedin
-            </button>
-            <button className="bg-blue-600 w-full px-5 py-3 cursor-pointer rounded-lg hover:bg-blue-700 text-white hover:text-yellow-400 text-sm">
-              Sign in with Linkedin OpenID connect
+
+            <button
+              type="button"
+              className="h-11 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-sm font-medium text-slate-700"
+            >
+              <span className="font-bold text-lg"></span>
+              Apple
             </button>
           </div>
+
+          {/* Register */}
+          <p className="mt-7 text-center text-sm text-slate-500">
+            Don't have an account?{" "}
+            <Link
+              href="/auth/register"
+              className="font-semibold text-green-600 hover:text-green-700 transition-colors"
+            >
+              Create new Account
+            </Link>
+          </p>
         </div>
+
+        {/* Footer */}
+        <p className="mt-6 text-center text-xs text-slate-400">
+          By continuing, you agree to our{" "}
+          <Link href="/terms" className="underline hover:text-slate-600">
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="underline hover:text-slate-600">
+            Privacy Policy
+          </Link>
+          .
+        </p>
       </div>
-    </div>
+    </main>
   );
 }
+
