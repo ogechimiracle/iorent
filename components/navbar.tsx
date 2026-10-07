@@ -3,18 +3,20 @@
 import Link from "next/link";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoIosMail, IoMdPerson, IoMdClose, IoMdMenu } from "react-icons/io";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FaArrowRightLong, FaArrowLeft } from "react-icons/fa6";
 import { TbSteeringWheelFilled } from "react-icons/tb";
 import { PiSquaresFourLight } from "react-icons/pi";
 import ThemeToggle from "./theme-toggle";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NavLinks } from "@/utils/constant";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Header1() {
   const path = usePathname();
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const {isAuthenticated, logout} = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -126,13 +128,27 @@ export default function Header1() {
 
           {/* Actions & Controls */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link
-              href="/auth"
-              className="hidden lg:flex items-center gap-1.5 rounded-lg text-[13px] px-3.5 py-2 font-medium bg-slate-100 dark:bg-slate-700 hover:bg-[#70f46d] hover:text-black transition-all"
-            >
-              <IoMdPerson className="size-4" />
-              Sign in
-            </Link>
+            {isAuthenticated ? (
+              <div className="group relative">
+                <IoMdPerson size={25} className="cursor-pointer" />
+
+                <div className="invisible group-hover:visible transition-all ease-in-out duration-300 delay-100 absolute top-5 right-5 lg:w-64 rounded-lg bg-white text-black dark:text-white dark:bg-slate-800 flex flex-col gap-y-2 px-5 py-3">
+                  <Link href="/">Profile</Link>
+                  <Link href="/">Notifications</Link>
+                  <button className="flex items-center justify-center gap-x-3 py-3 rounded-lg bg-red-900 text-white px-5 cursor-pointer hover:bg-red-500" onClick={logout}>
+                    <span>Logout</span> <FaArrowLeft size={15} />{" "}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <Link
+                href="/auth"
+                className="hidden lg:flex items-center gap-1.5 rounded-lg text-[13px] px-3.5 py-2 font-medium bg-slate-100 dark:bg-slate-700 hover:bg-[#70f46d] hover:text-black transition-all"
+              >
+                <IoMdPerson className="size-4" />
+                Sign in
+              </Link>
+            )}
 
             <ThemeToggle />
 
