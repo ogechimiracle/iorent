@@ -11,7 +11,7 @@ interface statProps{
 
 export default function StatCard({label, count, path, textLink}:statProps){
    return (
-     <div className="w-full px-5 py-4 rounded-xl text-black bg-gray-100 shadow-md dark:bg-slate-800 dark:text-white flex flex-col gap-y-2">
+     <div className="w-full px-5 py-4 rounded-xl text-black bg-gray-100 shadow-md dark:bg-card dark:text-white flex flex-col gap-y-2">
        <p className="text-sm font-semibold">{label}</p>
        <div className="flex items-center justify-between">
          <p className="text-lg font-bold ">+{count}</p>

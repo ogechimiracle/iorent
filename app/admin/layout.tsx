@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import "../globals.css";
 import AdminNavBar from "@/components/admin/nav";
 import AdminTopBar from "@/components/admin/topBar";
@@ -7,15 +7,11 @@ import ProtectedRoute from "@/components/auth/protectedRoute";
 
 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const roboto = Roboto({
+  variable: "--font-roboto",
+  weight: ["100","200","300","400","500","600","700","800","900"]
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Carento-admin",
@@ -26,15 +22,15 @@ export default function AdminLayout({ children }: LayoutProps<"/">) {
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
       <div
-        className={`${geistSans.variable} ${geistMono.variable}  antialiased`}
+        className={`${roboto.variable}  antialiased`}
       >
-        <div>
-          <div className="hidden lg:block w-72 dark:bg-slate-800 bg-gray-100 shadow-md  h-screen fixed top-0 bottom-0 left-0">
+        <div className="font-roboto">
+          <div className="hidden lg:block w-72 dark:bg-card bg-gray-100 shadow-md  h-screen fixed top-0 bottom-0 left-0">
             <AdminNavBar />
           </div>
 
           <div className="lg:ml-[18rem]">
-            <div className=" dark:bg-slate-800 bg-gray-100 shadow-md">
+            <div className=" dark:bg-card bg-gray-100 shadow-md">
               <AdminTopBar />
             </div>
             <div className="px-5 py-8">{children}</div>
