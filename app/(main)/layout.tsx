@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Montserrat, Borel } from "next/font/google";
+import { Geist, Borel } from "next/font/google";
 import "../globals.css";
 import NavBar from "@/components/navbar";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -18,11 +18,7 @@ const borel = Borel({
   weight: ["400"],
 });
 
-const monserat = Montserrat({
-  variable: "--font-monserat",
-  
-  weight:['100','200','300','400','500','600','700','800']
-})
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function UserLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className={`${monserat.variable} ${borel.variable}  antialiased`}>
+    <div className={` ${borel.variable}  antialiased`}>
       <NavBar />
       <main className="">{children}</main>
       <ScrollToTop/>

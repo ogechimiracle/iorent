@@ -25,7 +25,6 @@ export default function VehicleCategories(){
       { key: "id", label: "Category ID" },
       { key: "name", label: "Category name" },
       { key: "slug", label: "Slug" },
-      { key: "description", label: "Description" },
       
     ];
 
